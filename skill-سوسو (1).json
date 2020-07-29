@@ -1,0 +1,314 @@
+{
+  "intents": [
+    {
+      "intent": "تعارف",
+      "examples": [
+        {
+          "text": "عرفني بنفسك ياسوسو"
+        },
+        {
+          "text": "انت ايش تسوي هنا ؟"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "ترحيب",
+      "examples": [
+        {
+          "text": "السلام عليكم"
+        },
+        {
+          "text": "مرحبا"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "توديع",
+      "examples": [
+        {
+          "text": "مع السلامة"
+        },
+        {
+          "text": "شكرا لك باي"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "حجز",
+      "examples": [
+        {
+          "text": "اريد حجز موعد"
+        },
+        {
+          "text": "حجز"
+        },
+        {
+          "text": "موعد"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "موعد",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "موعد",
+          "synonyms": [
+            "مقابلة",
+            "لقاء وظيفي",
+            "اجتماع"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-time",
+      "values": [],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-date",
+      "values": [],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "الساعة كم لو تكرمت ؟"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_4_1595922740182",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1595922740187",
+      "previous_sibling": "handler_10_1595922740187"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_4_1595922740182",
+      "context": {
+        "time": "@sys-time"
+      },
+      "conditions": "@sys-time",
+      "event_name": "input",
+      "dialog_node": "handler_10_1595922740187"
+    },
+    {
+      "type": "slot",
+      "parent": "node_4_1595921206077",
+      "variable": "$date",
+      "dialog_node": "slot_1_1595922635695",
+      "previous_sibling": "node_10_1595923011846"
+    },
+    {
+      "type": "slot",
+      "parent": "node_4_1595921206077",
+      "variable": "$time",
+      "dialog_node": "slot_4_1595922740182",
+      "previous_sibling": "slot_1_1595922635695"
+    },
+    {
+      "type": "standard",
+      "parent": "node_4_1595921206077",
+      "conditions": "@موعد",
+      "dialog_node": "node_10_1595923011846"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "تاريخ كم حاب تحجز موعدك معنا ؟"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_1_1595922635695",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1595922635697",
+      "previous_sibling": "handler_4_1595922635697"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_1_1595922635695",
+      "context": {
+        "date": "@sys-date"
+      },
+      "conditions": "@sys-date",
+      "event_name": "input",
+      "dialog_node": "handler_4_1595922635697"
+    },
+    {
+      "type": "standard",
+      "title": "أي شيء آخر",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "لم أفهم، يمكنك محاولة اعادة الصياغة"
+              },
+              {
+                "text": "هل يمكنك اعادة صياغة عبارتك؟ أنا لا فهم"
+              },
+              {
+                "text": "لم أفهم قصدك"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "أي شيء آخر",
+      "previous_sibling": "node_8_1595923157968",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "عفوا وتنورنا "
+              },
+              {
+                "text": "ولو بالخدمة :)  "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#توديع",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_8_1595923157968",
+      "previous_sibling": "node_4_1595921206077"
+    },
+    {
+      "type": "standard",
+      "title": "تعارف",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "انا روبوت سعديه يدلعوني سوسو اقدر اجاوبك على استفساراتك عن الشركة او اذا انت مضيع مكان تبيه أمريني :) ؟"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#تعارف",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_4_1595908614516",
+      "previous_sibling": "node_7_1595908490191"
+    },
+    {
+      "type": "frame",
+      "title": "الحجز",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "تم حجز موعد لك مع شركتنا وبالتوفيق لك ."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#حجز",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_4_1595921206077",
+      "previous_sibling": "node_4_1595908614516"
+    },
+    {
+      "type": "standard",
+      "title": "الترحيب",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "يامرحبا معك سوسو تفضل "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#ترحيب",
+      "dialog_node": "node_7_1595908490191",
+      "previous_sibling": "مرحبا"
+    },
+    {
+      "type": "standard",
+      "title": "مرحبا",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "ياهلاوالله ارحب حبيبي كيف اقدر اخدمك ؟"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "مرحبا"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": ":هل قصدت",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "كل ما سبق خطأ"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": ":هل قصدت"
+    }
+  },
+  "learning_opt_out": false,
+  "name": "سوسو",
+  "language": "ar",
+  "description": ""
+}
